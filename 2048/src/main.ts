@@ -12,11 +12,11 @@ const loadGame = (): void => {
     [9, 10, 11, 12],
     [13, 14, 15, 16],
   ];
-  for (let y = 0; y < 4; y++) {
-    for (let x = 0; x < 4; x++) {
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
       let box = document.createElement("div");
       box.classList.add("board__box");
-      box.innerText = board[y][x].toString();
+      box.innerText = board[i][j].toString();
       gameBoard.appendChild(box);
     }
   }
