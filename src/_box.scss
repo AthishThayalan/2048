@@ -1,4 +1,4 @@
-board__box {
+.board__box {
   width: 90px;
   height: 90px;
   border: 5px solid tan;
@@ -8,57 +8,57 @@ board__box {
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.two {
-  background: #eee4da;
-  color: grey;
-}
+  &--2 {
+    background: #eee4da;
+    color: grey;
+  }
 
-.four {
-  background: #ece0ca;
-  color: grey;
-}
-.eight {
-  background: lightsalmon;
-  color: whitesmoke;
-}
-.sixteen {
-  background-color: rgb(212, 119, 83);
-  color: whitesmoke;
-}
+  &--4 {
+    background: #ece0ca;
+    color: grey;
+  }
+  &--8 {
+    background: lightsalmon;
+    color: whitesmoke;
+  }
+  &--16 {
+    background-color: rgb(212, 119, 83);
+    color: whitesmoke;
+  }
 
-.thirtyTwo {
-  background-color: #f57c5f;
-  color: whitesmoke;
-}
+  &--32 {
+    background-color: #f57c5f;
+    color: whitesmoke;
+  }
 
-.sixtyFour {
-  background-color: #f75f3b;
-  color: whitesmoke;
-}
+  &--64 {
+    background-color: #f75f3b;
+    color: whitesmoke;
+  }
 
-.oneTwentyEight {
-  background-color: #edd073;
-  color: whitesmoke;
-}
+  &--128 {
+    background-color: #edd073;
+    color: whitesmoke;
+  }
 
-.twoFiftySix {
-  background-color: #edcc62;
-  color: whitesmoke;
-}
+  &--256 {
+    background-color: #edcc62;
+    color: whitesmoke;
+  }
 
-.fiveTwelve {
-  background-color: #edc950;
-  color: whitesmoke;
-}
+  &--512 {
+    background-color: #edc950;
+    color: whitesmoke;
+  }
 
-.oneThousandTwentyFour {
-  background-color: #edc53f;
-  color: whitesmoke;
-}
+  &--1024 {
+    background-color: #edc53f;
+    color: whitesmoke;
+  }
 
-.twoThousandFortyEight {
-  background-color: #edc22e;
-  color: whitesmoke;
+  &--2048 {
+    background-color: #edc22e;
+    color: whitesmoke;
+  }
 }
