@@ -1,0 +1,64 @@
+board__box {
+  width: 90px;
+  height: 90px;
+  border: 5px solid tan;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.two {
+  background: #eee4da;
+  color: grey;
+}
+
+.four {
+  background: #ece0ca;
+  color: grey;
+}
+.eight {
+  background: lightsalmon;
+  color: whitesmoke;
+}
+.sixteen {
+  background-color: rgb(212, 119, 83);
+  color: whitesmoke;
+}
+
+.thirtyTwo {
+  background-color: #f57c5f;
+  color: whitesmoke;
+}
+
+.sixtyFour {
+  background-color: #f75f3b;
+  color: whitesmoke;
+}
+
+.oneTwentyEight {
+  background-color: #edd073;
+  color: whitesmoke;
+}
+
+.twoFiftySix {
+  background-color: #edcc62;
+  color: whitesmoke;
+}
+
+.fiveTwelve {
+  background-color: #edc950;
+  color: whitesmoke;
+}
+
+.oneThousandTwentyFour {
+  background-color: #edc53f;
+  color: whitesmoke;
+}
+
+.twoThousandFortyEight {
+  background-color: #edc22e;
+  color: whitesmoke;
+}

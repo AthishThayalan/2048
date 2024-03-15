@@ -17,6 +17,7 @@ const loadGame = (): void => {
       let box = document.createElement("div");
       box.classList.add("board__box");
       box.innerText = board[i][j].toString();
+      box.classList.add("twoThousandFortyEight");
       gameBoard.appendChild(box);
     }
   }
