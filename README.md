@@ -4,19 +4,20 @@ This is a simple implementation of the popular 2048 game built using HTML, CSS, 
 
 **Features**
 
-Responsive Design: The game adapts to different screen sizes, allowing users to play on various devices.
 
-Local Storage: The high score is stored locally using browser's local storage, allowing users to keep track of their best scores even after closing the browser.
+- Responsive Design: The game adapts to different screen sizes, allowing users to play on various devices.
 
-Sound Effects: Sound effects are added to enhance the gaming experience.
+- Local Storage: The high score is stored locally using browser's local storage, allowing users to keep track of their best scores even after closing the browser.
+
+- Sound Effects: Sound effects are added to enhance the gaming experience.
 
 **How to Play**
 
-Use arrow keys (Up, Down, Left, Right) to move the tiles on the board.
+- Use arrow keys (Up, Down, Left, Right) to move the tiles on the board.
 
-Tiles with the same number merge when they collide with each other, doubling their value.
+- Tiles with the same number merge when they collide with each other, doubling their value.
 
-The goal is to create a tile with the value of 2048.
+- The goal is to create a tile with the value of 2048.
 
 **Getting Started**
 To get started with the game:
