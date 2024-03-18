@@ -5,8 +5,8 @@ if (!gameBoard) {
   throw new Error("Element not found.");
 }
 let board: number[][] = [
-  [2, 2, 0, 0],
-  [0, 4, 16, 0],
+  [2, 2, 2, 2],
+  [4, 4, 16, 0],
   [0, 8, 32, 0],
   [0, 0, 0, 0],
 ];
@@ -36,6 +36,11 @@ const loadGame = (): void => {
 
 const handleLeftPress = (): void => {
   console.log("pressed");
+  //What I expect to happen
+  // 4 4 0 0
+  // 4 4
+  //8
+  //8 0 0 0
   for (let i = 0; i < 3; i++) {
     let row = board[i];
     console.log(`row = ${row}`);
@@ -46,11 +51,17 @@ const handleLeftPress = (): void => {
         filteredRow[j + 1] = 0;
       }
     }
+    filteredRow = filteredRow.filter((num) => num !== 0); // get rid of 0s again
     while (filteredRow.length !== 4) {
       filteredRow.push(0);
     }
     board[i] = filteredRow;
     console.log(board);
+    // update the style of each box
+    for (let k = 0; k < 4; k++) {
+      let box = document.getElementById(i.toString() + "-" + k.toString());
+      updateBoard(box, board[i][k]);
+    }
   }
 };
 
