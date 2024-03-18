@@ -24,4 +24,6 @@ To get started with the game:
 
 Clone the repository to your local machine.
 Open the index.html file in your browser.
-Alternatively, you can play the game online (add the link if you host the game online).
+Alternatively, you can play the game online :
+
+- Live demo : 
