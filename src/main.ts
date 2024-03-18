@@ -12,13 +12,39 @@ let board: number[][] = [
 ];
 
 const setStart = () => {
-  const randomNumbers = [];
+  const randomNumbers: number[] = [];
   for (let i = 0; i < 4; i++) {
     const randomNumber = Math.floor(Math.random() * 4);
     randomNumbers.push(randomNumber);
   }
   board[randomNumbers[0]][randomNumbers[1]] = 2;
   board[randomNumbers[2]][randomNumbers[3]] = 2;
+};
+
+const playShiftSound = () => {
+  const audio = document.getElementById("rowShiftSound") as HTMLAudioElement;
+  audio.play();
+};
+
+const spawnRandomBox = (): void => {
+  const emptyCells = [];
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (board[i][j] === 0) {
+        emptyCells.push([i, j]);
+      }
+    }
+  }
+  const randomIndex = Math.floor(Math.random() * emptyCells.length);
+  const randomCell = emptyCells[randomIndex];
+  const newValue = Math.random() < 0.9 ? 2 : 4;
+
+  board[randomCell[0]][randomCell[1]] = newValue;
+
+  const box = document.getElementById(
+    (4 * randomCell[0] + randomCell[1]).toString()
+  );
+  updateBoard(box, newValue);
 };
 
 const updateBoard = (box: any, value: number): void => {
@@ -105,17 +131,22 @@ const horizontalShift = (direction: "right" | "left") => {
       updateBoard(box, board[i][k]);
     }
   }
+  playShiftSound();
 };
 
 document.addEventListener("DOMContentLoaded", loadGame);
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft") {
     horizontalShift("left");
+    spawnRandomBox();
   } else if (event.key === "ArrowRight") {
     horizontalShift("right");
+    spawnRandomBox();
   } else if (event.key === "ArrowUp") {
     verticalShift("up");
+    spawnRandomBox();
   } else if (event.key === "ArrowDown") {
     verticalShift("down");
+    spawnRandomBox();
   }
 });
