@@ -3,10 +3,12 @@ import "./style.scss";
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
 const score = document.querySelector<HTMLSpanElement>("span");
+const highScore = document.getElementById("highScore");
 
-if (!gameBoard || !newGame || !score) {
+if (!gameBoard || !newGame || !score || !highScore) {
   throw new Error("Element not found.");
 }
+
 let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
@@ -26,6 +28,12 @@ const setStart = () => {
   board[randomNumbers[2]][randomNumbers[3]] = 2;
 };
 
+const updateHighscore = (): void => {
+  if (counter > Number(highScore.innerText)) {
+    highScore.innerText = counter.toString();
+  }
+};
+
 const playShiftSound = () => {
   const audio = document.getElementById("rowShiftSound") as HTMLAudioElement;
   audio.play();
@@ -40,6 +48,7 @@ const resetScore = (): void => {
   counter = 0;
   score.innerText = counter.toString();
 };
+
 const resetBoard = () => {
   board = [
     [0, 0, 0, 0],
@@ -102,7 +111,6 @@ const checkValidMoves = (): boolean => {
       }
     }
   }
-
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 4; j++) {
       if (board[i][j] === board[i][j + 1] || board[i][j] === board[i + 1][j]) {
@@ -110,13 +118,13 @@ const checkValidMoves = (): boolean => {
       }
     }
   }
+  updateHighscore();
   return false;
 };
 
 const gameOver = () => {
-  console.log(`Moves Available ? ${checkValidMoves()}`);
   if (!checkValidMoves()) {
-    alert("GAME OVER");
+    alert("Game over.");
   }
 };
 
@@ -127,7 +135,6 @@ const loadGame = (): void => {
       let box = document.createElement("div");
       box.classList.add("board__box");
       box.id = (4 * i + (j % 4)).toString();
-      console.log(box.id);
       let value: number = board[i][j];
       updateBoard(box, value);
       gameBoard.appendChild(box);
@@ -167,7 +174,6 @@ const verticalShift = (direction: "up" | "down") => {
 const horizontalShift = (direction: "right" | "left") => {
   for (let i = 0; i < 4; i++) {
     let row = direction === "right" ? board[i].reverse() : board[i];
-    console.log(`row = ${row}`);
     let filteredRow = row.filter((num) => num !== 0);
     for (let j = 0; j < filteredRow.length - 1; j++) {
       if (filteredRow[j] == filteredRow[j + 1]) {
@@ -177,8 +183,6 @@ const horizontalShift = (direction: "right" | "left") => {
       }
     }
     filteredRow = filteredRow.filter((num) => num !== 0);
-    console.log(filteredRow);
-
     while (filteredRow.length !== 4) {
       filteredRow.push(0);
     }
@@ -191,6 +195,7 @@ const horizontalShift = (direction: "right" | "left") => {
       updateBoard(box, board[i][k]);
     }
   }
+  spawnRandomBox();
   playShiftSound();
 };
 
@@ -198,16 +203,12 @@ document.addEventListener("DOMContentLoaded", loadGame);
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft") {
     horizontalShift("left");
-    spawnRandomBox();
   } else if (event.key === "ArrowRight") {
     horizontalShift("right");
-    spawnRandomBox();
   } else if (event.key === "ArrowUp") {
     verticalShift("up");
-    spawnRandomBox();
   } else if (event.key === "ArrowDown") {
     verticalShift("down");
-    spawnRandomBox();
   }
   gameOver();
 });
