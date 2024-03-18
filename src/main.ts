@@ -4,9 +4,13 @@ const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
 const score = document.querySelector<HTMLSpanElement>("span");
 const highScore = document.getElementById("highScore");
+const savedHighScore = localStorage.getItem("highScore");
 
 if (!gameBoard || !newGame || !score || !highScore) {
   throw new Error("Element not found.");
+}
+if (savedHighScore) {
+  highScore.innerText = savedHighScore;
 }
 
 let board: number[][] = [
@@ -28,9 +32,10 @@ const setStart = () => {
   board[randomNumbers[2]][randomNumbers[3]] = 2;
 };
 
-const updateHighscore = (): void => {
+const updateHighScore = (): void => {
   if (counter > Number(highScore.innerText)) {
     highScore.innerText = counter.toString();
+    localStorage.setItem("highScore", counter.toString());
   }
 };
 
@@ -118,7 +123,7 @@ const checkValidMoves = (): boolean => {
       }
     }
   }
-  updateHighscore();
+  updateHighScore();
   return false;
 };
 
