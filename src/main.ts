@@ -36,11 +36,19 @@ const loadGame = (): void => {
 
 const handleLeftPress = (): void => {
   console.log("pressed");
-  //What I expect to happen
-  // 4 4 0 0
-  // 4 4
-  //8
-  //8 0 0 0
+
+  //Left
+  // 0 4 4 2
+  // 4 4 2
+  // 8 2
+  // 8 2 0 0
+
+  //Right
+  // 0 4 4 2
+  // 4 4 2
+  //8 2
+  // 0 0 8 2
+
   for (let i = 0; i < 4; i++) {
     let row = board[i];
     console.log(`row = ${row}`);
@@ -65,9 +73,42 @@ const handleLeftPress = (): void => {
   }
 };
 
+const handleRightPress = (): void => {
+  console.log("pressed");
+  //What I expect to happen
+  // 4 4 2 0
+  // 4 4 2
+  //8 2 0 0
+  //8 0 0 0
+  for (let i = 0; i < 4; i++) {
+    let row = board[i];
+    console.log(`row = ${row}`);
+    let filteredRow = row.filter((num) => num !== 0);
+    for (let j = filteredRow.length - 1; j >= 1; j--) {
+      if (filteredRow[j] == filteredRow[j - 1]) {
+        filteredRow[j] += filteredRow[j - 1];
+        filteredRow[j - 1] = 0;
+      }
+    }
+    filteredRow = filteredRow.filter((num) => num !== 0); // get rid of 0s again
+    while (filteredRow.length !== 4) {
+      filteredRow.unshift(0);
+    }
+    board[i] = filteredRow;
+    console.log(board);
+    // update the style of each box
+    for (let k = 0; k < 4; k++) {
+      let box = document.getElementById(i.toString() + "-" + k.toString());
+      updateBoard(box, board[i][k]);
+    }
+  }
+};
+
 document.addEventListener("DOMContentLoaded", loadGame);
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft") {
     handleLeftPress();
+  } else if (event.key === "ArrowRight") {
+    handleRightPress();
   }
 });
