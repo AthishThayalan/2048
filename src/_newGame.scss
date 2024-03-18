@@ -1,0 +1,18 @@
+#newGameBtn {
+  margin-top: 30px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:active {
+    transform: scale(0.95);
+  }
+  &:hover {
+    background-color: #45a049;
+  }
+}

@@ -1,7 +1,10 @@
 import "./style.scss";
 
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
-if (!gameBoard) {
+const newGame = document.getElementById("newGameBtn");
+const score = document.querySelector<HTMLSpanElement>("span");
+
+if (!gameBoard || !newGame || !score) {
   throw new Error("Element not found.");
 }
 let board: number[][] = [
@@ -10,6 +13,8 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
 ];
+let counter = 0;
+score.innerText = counter.toString();
 
 const setStart = () => {
   const randomNumbers: number[] = [];
@@ -26,6 +31,24 @@ const playShiftSound = () => {
   audio.play();
 };
 
+const updateScore = (num: number): void => {
+  counter += num;
+  score.innerText = counter.toString();
+};
+
+const resetScore = (): void => {
+  counter = 0;
+  score.innerText = counter.toString();
+};
+const resetBoard = () => {
+  board = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ];
+};
+
 const spawnRandomBox = (): void => {
   const emptyCells = [];
   for (let i = 0; i < 4; i++) {
@@ -34,6 +57,9 @@ const spawnRandomBox = (): void => {
         emptyCells.push([i, j]);
       }
     }
+  }
+  if (emptyCells.length === 0) {
+    return;
   }
   const randomIndex = Math.floor(Math.random() * emptyCells.length);
   const randomCell = emptyCells[randomIndex];
@@ -58,6 +84,39 @@ const updateBoard = (box: any, value: number): void => {
     setTimeout(() => {
       box.classList.remove("board__box--updated");
     }, 300);
+  }
+};
+
+const startNewGame = () => {
+  resetScore();
+  resetBoard();
+  gameBoard.innerHTML = "";
+  loadGame();
+};
+
+const checkValidMoves = (): boolean => {
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (board[i][j] === 0) {
+        return true;
+      }
+    }
+  }
+
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (board[i][j] === board[i][j + 1] || board[i][j] === board[i + 1][j]) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+const gameOver = () => {
+  console.log(`Moves Available ? ${checkValidMoves()}`);
+  if (!checkValidMoves()) {
+    alert("GAME OVER");
   }
 };
 
@@ -114,6 +173,7 @@ const horizontalShift = (direction: "right" | "left") => {
       if (filteredRow[j] == filteredRow[j + 1]) {
         filteredRow[j] += filteredRow[j + 1];
         filteredRow[j + 1] = 0;
+        updateScore(filteredRow[j]);
       }
     }
     filteredRow = filteredRow.filter((num) => num !== 0);
@@ -149,4 +209,6 @@ document.addEventListener("keydown", (event) => {
     verticalShift("down");
     spawnRandomBox();
   }
+  gameOver();
 });
+newGame.addEventListener("click", startNewGame);
