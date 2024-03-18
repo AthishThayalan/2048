@@ -36,21 +36,21 @@ const loadGame = (): void => {
 
 const handleLeftPress = (): void => {
   console.log("pressed");
-  let returnArr: number[] = [];
-  for (let i = 0; i < 4; i++) {
-    let removeZero = board[i].filter((num) => num !== 0);
-    for (let j = 0; j < 4; j++) {
-      if (removeZero[j] === removeZero[j + 1]) {
-        removeZero[j] += removeZero[j + 1];
-        removeZero[j + 1] = 0;
+  for (let i = 0; i < 3; i++) {
+    let row = board[i];
+    console.log(`row = ${row}`);
+    let filteredRow = row.filter((num) => num !== 0);
+    for (let j = 0; j < filteredRow.length - 1; j++) {
+      if (filteredRow[j] == filteredRow[j + 1]) {
+        filteredRow[j] += filteredRow[j + 1];
+        filteredRow[j + 1] = 0;
       }
     }
-    let removeZeroAgain: number[] = removeZero.filter((num) => num !== 0);
-    while (removeZeroAgain.length < 4) {
-      removeZeroAgain.push(0);
+    while (filteredRow.length !== 4) {
+      filteredRow.push(0);
     }
-    board[i] = removeZeroAgain;
-    console.log(removeZeroAgain);
+    board[i] = filteredRow;
+    console.log(board);
   }
 };
 
