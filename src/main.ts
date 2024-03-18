@@ -5,11 +5,13 @@ if (!gameBoard) {
   throw new Error("Element not found.");
 }
 let board: number[][] = [
-  [2, 2, 2, 2],
-  [2, 2, 2, 2],
-  [2, 2, 2, 2],
-  [2, 2, 2, 2],
+  [2, 2, 2, 0],
+  [2, 2, 2, 0],
+  [2, 2, 2, 0],
+  [2, 2, 2, 0],
 ];
+
+// 2 2 2
 
 const updateBoard = (box: any, value: number): void => {
   box.innerText = "";
@@ -26,10 +28,39 @@ const loadGame = (): void => {
     for (let j = 0; j < 4; j++) {
       let box = document.createElement("div");
       box.classList.add("board__box");
-      box.id = i.toString() + "-" + j.toString(); // keep track of box position. Might be easier to move in x and y direction
+      box.id = (4 * i + (j % 4)).toString();
       let value: number = board[i][j];
       updateBoard(box, value);
       gameBoard.appendChild(box);
+    }
+  }
+};
+
+const transposeBoard = (board: number[][]): number[][] => {
+  let transposedBoard: number[][] = [];
+  for (let i = 0; i < 4; i++) {
+    let newRow: number[] = [];
+    for (let j = 0; j < 4; j++) {
+      newRow.push(board[j][i]);
+    }
+    transposedBoard.push(newRow);
+  }
+
+  return transposedBoard;
+};
+
+const verticalShift = (direction: "up" | "down") => {
+  board = transposeBoard(board);
+  if (direction === "up") {
+    horizontalShift("left");
+  } else {
+    horizontalShift("right");
+  }
+  board = transposeBoard(board);
+  for (let i = 0; i < 4; i++) {
+    for (let k = 0; k < 4; k++) {
+      let box = document.getElementById((4 * i + (k % 4)).toString());
+      updateBoard(box, board[i][k]);
     }
   }
 };
@@ -45,79 +76,18 @@ const horizontalShift = (direction: "right" | "left") => {
         filteredRow[j + 1] = 0;
       }
     }
-    filteredRow = filteredRow.filter((num) => num !== 0); // get rid of 0s again
+    filteredRow =
+      direction === "left"
+        ? filteredRow.filter((num) => num !== 0)
+        : filteredRow.filter((num) => num !== 0).reverse();
+    console.log(filteredRow);
+
     while (filteredRow.length !== 4) {
       direction === "left" ? filteredRow.push(0) : filteredRow.unshift(0);
     }
     board[i] = filteredRow;
-    console.log(board);
-    // update the style of each box
     for (let k = 0; k < 4; k++) {
-      let box = document.getElementById(i.toString() + "-" + k.toString());
-      updateBoard(box, board[i][k]);
-    }
-  }
-};
-
-const handleLeftPress = (): void => {
-  console.log("pressed");
-
-  //Left
-  // 0 4 4 2
-  // 4 4 2
-  // 8 2
-  // 8 2 0 0
-
-  //Right
-  // 0 4 4 2
-  // 4 4 2
-  //8 2
-  // 0 0 8 2
-  for (let i = 0; i < 4; i++) {
-    let row = board[i];
-    console.log(`row = ${row}`);
-    let filteredRow = row.filter((num) => num !== 0);
-    for (let j = 0; j < filteredRow.length - 1; j++) {
-      if (filteredRow[j] == filteredRow[j + 1]) {
-        filteredRow[j] += filteredRow[j + 1];
-        filteredRow[j + 1] = 0;
-      }
-    }
-    filteredRow = filteredRow.filter((num) => num !== 0); // get rid of 0s again
-    while (filteredRow.length !== 4) {
-      filteredRow.push(0);
-    }
-    board[i] = filteredRow;
-    console.log(board);
-    // update the style of each box
-    for (let k = 0; k < 4; k++) {
-      let box = document.getElementById(i.toString() + "-" + k.toString());
-      updateBoard(box, board[i][k]);
-    }
-  }
-};
-
-const handleRightPress = (): void => {
-  console.log("pressed");
-  for (let i = 0; i < 4; i++) {
-    let row = board[i];
-    console.log(`row = ${row}`);
-    let filteredRow = row.filter((num) => num !== 0);
-    for (let j = filteredRow.length - 1; j >= 1; j--) {
-      if (filteredRow[j] == filteredRow[j - 1]) {
-        filteredRow[j] += filteredRow[j - 1];
-        filteredRow[j - 1] = 0;
-      }
-    }
-    filteredRow = filteredRow.filter((num) => num !== 0); // get rid of 0s again
-    while (filteredRow.length !== 4) {
-      filteredRow.unshift(0);
-    }
-    board[i] = filteredRow;
-    console.log(board);
-    // update the style of each box
-    for (let k = 0; k < 4; k++) {
-      let box = document.getElementById(i.toString() + "-" + k.toString());
+      let box = document.getElementById((4 * i + (k % 4)).toString());
       updateBoard(box, board[i][k]);
     }
   }
@@ -129,5 +99,9 @@ document.addEventListener("keydown", (event) => {
     horizontalShift("left");
   } else if (event.key === "ArrowRight") {
     horizontalShift("right");
+  } else if (event.key === "ArrowUp") {
+    verticalShift("up");
+  } else if (event.key === "ArrowDown") {
+    verticalShift("down");
   }
 });
