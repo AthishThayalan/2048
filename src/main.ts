@@ -5,11 +5,21 @@ if (!gameBoard) {
   throw new Error("Element not found.");
 }
 let board: number[][] = [
-  [2, 2, 2, 4],
-  [2, 2, 2, 4],
-  [2, 2, 2, 4],
-  [2, 2, 2, 4],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
 ];
+
+const setStart = () => {
+  const randomNumbers = [];
+  for (let i = 0; i < 4; i++) {
+    const randomNumber = Math.floor(Math.random() * 4);
+    randomNumbers.push(randomNumber);
+  }
+  board[randomNumbers[0]][randomNumbers[1]] = 2;
+  board[randomNumbers[2]][randomNumbers[3]] = 2;
+};
 
 const updateBoard = (box: any, value: number): void => {
   box.innerText = "";
@@ -18,15 +28,21 @@ const updateBoard = (box: any, value: number): void => {
   if (value !== 0) {
     box.innerText = value;
     box.classList.add(`board__box--${value}`);
+    box.classList.add("board__box--updated");
+    setTimeout(() => {
+      box.classList.remove("board__box--updated");
+    }, 300);
   }
 };
 
 const loadGame = (): void => {
+  setStart();
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       let box = document.createElement("div");
       box.classList.add("board__box");
       box.id = (4 * i + (j % 4)).toString();
+      console.log(box.id);
       let value: number = board[i][j];
       updateBoard(box, value);
       gameBoard.appendChild(box);

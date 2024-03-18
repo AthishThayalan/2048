@@ -2,8 +2,9 @@
   margin-top: 100px;
   display: flex;
   flex-wrap: wrap;
-  background-color: beige;
+  background-color: tan;
   border: 10px solid tan;
   width: 400px;
   height: 400px;
+  transition: background-color 0.3s ease;
 }

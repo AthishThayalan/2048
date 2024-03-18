@@ -61,4 +61,19 @@
     background-color: #edc22e;
     color: whitesmoke;
   }
+  &--updated {
+    animation: magnify 0.3s ease;
+  }
+
+  @keyframes magnify {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 }
