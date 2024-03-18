@@ -1,4 +1,5 @@
 import "./style.scss";
+import confetti from "canvas-confetti";
 
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
@@ -17,7 +18,7 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 0, 0, 0],
+  [0, 0, 1024, 1024],
 ];
 let counter = 0;
 score.innerText = counter.toString();
@@ -127,6 +128,19 @@ const checkValidMoves = (): boolean => {
   return false;
 };
 
+const checkWinCondition = (): void => {
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (board[i][j] === 2048) {
+        confetti({
+          particleCount: 1000,
+          spread: 360,
+        });
+      }
+    }
+  }
+};
+
 const gameOver = () => {
   if (!checkValidMoves()) {
     alert("Game over.");
@@ -201,6 +215,7 @@ const horizontalShift = (direction: "right" | "left") => {
     }
   }
   spawnRandomBox();
+  checkWinCondition();
   playShiftSound();
 };
 
