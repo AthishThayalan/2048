@@ -5,13 +5,11 @@ if (!gameBoard) {
   throw new Error("Element not found.");
 }
 let board: number[][] = [
-  [2, 2, 2, 0],
-  [2, 2, 2, 0],
-  [2, 2, 2, 0],
-  [2, 2, 2, 0],
+  [2, 2, 2, 4],
+  [2, 2, 2, 4],
+  [2, 2, 2, 4],
+  [2, 2, 2, 4],
 ];
-
-// 2 2 2
 
 const updateBoard = (box: any, value: number): void => {
   box.innerText = "";
@@ -67,7 +65,7 @@ const verticalShift = (direction: "up" | "down") => {
 
 const horizontalShift = (direction: "right" | "left") => {
   for (let i = 0; i < 4; i++) {
-    let row = board[i];
+    let row = direction === "right" ? board[i].reverse() : board[i];
     console.log(`row = ${row}`);
     let filteredRow = row.filter((num) => num !== 0);
     for (let j = 0; j < filteredRow.length - 1; j++) {
@@ -76,14 +74,14 @@ const horizontalShift = (direction: "right" | "left") => {
         filteredRow[j + 1] = 0;
       }
     }
-    filteredRow =
-      direction === "left"
-        ? filteredRow.filter((num) => num !== 0)
-        : filteredRow.filter((num) => num !== 0).reverse();
+    filteredRow = filteredRow.filter((num) => num !== 0);
     console.log(filteredRow);
 
     while (filteredRow.length !== 4) {
-      direction === "left" ? filteredRow.push(0) : filteredRow.unshift(0);
+      filteredRow.push(0);
+    }
+    if (direction === "right") {
+      filteredRow.reverse();
     }
     board[i] = filteredRow;
     for (let k = 0; k < 4; k++) {
