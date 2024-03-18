@@ -18,16 +18,18 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 0, 1024, 1024],
+  [0, 0, 0, 0],
 ];
 let counter = 0;
 score.innerText = counter.toString();
 
 const setStart = () => {
   const randomNumbers: number[] = [];
-  for (let i = 0; i < 4; i++) {
+  while (randomNumbers.length < 4) {
     const randomNumber = Math.floor(Math.random() * 4);
-    randomNumbers.push(randomNumber);
+    if (!randomNumbers.includes(randomNumber)) {
+      randomNumbers.push(randomNumber);
+    }
   }
   board[randomNumbers[0]][randomNumbers[1]] = 2;
   board[randomNumbers[2]][randomNumbers[3]] = 2;
@@ -43,6 +45,11 @@ const updateHighScore = (): void => {
 const playShiftSound = () => {
   const audio = document.getElementById("rowShiftSound") as HTMLAudioElement;
   audio.play();
+};
+
+const playPartySound = () => {
+  const winAudio = document.getElementById("winSound") as HTMLAudioElement;
+  winAudio.play();
 };
 
 const updateScore = (num: number): void => {
@@ -132,8 +139,9 @@ const checkWinCondition = (): void => {
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       if (board[i][j] === 2048) {
+        playPartySound();
         confetti({
-          particleCount: 1000,
+          particleCount: 700,
           spread: 360,
         });
       }
