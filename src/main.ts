@@ -18,7 +18,7 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 0, 0, 0],
+  [0, 0, 2048, 2048],
 ];
 let counter = 0;
 score.innerText = counter.toString();
@@ -55,6 +55,7 @@ const playPartySound = () => {
 const updateScore = (num: number): void => {
   counter += num;
   score.innerText = counter.toString();
+  updateHighScore();
 };
 
 const resetScore = (): void => {
@@ -101,7 +102,11 @@ const updateBoard = (box: any, value: number): void => {
   box.classList.add("board__box");
   if (value !== 0) {
     box.innerText = value;
-    box.classList.add(`board__box--${value}`);
+    if (value > 2048) {
+      box.classList.add("board__box--dark");
+    } else {
+      box.classList.add(`board__box--${value}`);
+    }
     box.classList.add("board__box--updated");
     setTimeout(() => {
       box.classList.remove("board__box--updated");
