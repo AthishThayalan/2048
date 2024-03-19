@@ -6,6 +6,7 @@ const newGame = document.getElementById("newGameBtn");
 const score = document.querySelector<HTMLSpanElement>("span");
 const highScore = document.getElementById("highScore");
 const savedHighScore = localStorage.getItem("highScore");
+let winAchieved = false;
 
 if (!gameBoard || !newGame || !score || !highScore) {
   throw new Error("Element not found.");
@@ -18,7 +19,7 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 0, 2048, 2048],
+  [0, 0, 1024, 1024],
 ];
 let counter = 0;
 score.innerText = counter.toString();
@@ -141,14 +142,18 @@ const checkValidMoves = (): boolean => {
 };
 
 const checkWinCondition = (): void => {
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 4; j++) {
-      if (board[i][j] === 2048) {
-        playPartySound();
-        confetti({
-          particleCount: 700,
-          spread: 360,
-        });
+  if (!winAchieved) {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (board[i][j] === 2048) {
+          winAchieved = true;
+          playPartySound();
+          confetti({
+            particleCount: 700,
+            spread: 360,
+          });
+          return;
+        }
       }
     }
   }
@@ -243,6 +248,7 @@ document.addEventListener("keydown", (event) => {
   } else if (event.key === "ArrowDown") {
     verticalShift("down");
   }
+
   gameOver();
 });
 newGame.addEventListener("click", startNewGame);
