@@ -128,11 +128,10 @@ const checkValidMoves = (): boolean => {
       if (board[i][j] === 0) {
         return true;
       }
-    }
-  }
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 4; j++) {
-      if (board[i][j] === board[i][j + 1] || board[i][j] === board[i + 1][j]) {
+      if (j < 3 && board[i][j] === board[i][j + 1]) {
+        return true;
+      }
+      if (i < 3 && board[i][j] === board[i + 1][j]) {
         return true;
       }
     }
@@ -235,10 +234,14 @@ const horizontalShift = (direction: "right" | "left") => {
   spawnRandomBox();
   checkWinCondition();
   playShiftSound();
+  gameOver();
 };
 
 document.addEventListener("DOMContentLoaded", loadGame);
 document.addEventListener("keydown", (event) => {
+  if (!checkValidMoves()) {
+    return;
+  }
   if (event.key === "ArrowLeft") {
     horizontalShift("left");
   } else if (event.key === "ArrowRight") {
@@ -248,7 +251,5 @@ document.addEventListener("keydown", (event) => {
   } else if (event.key === "ArrowDown") {
     verticalShift("down");
   }
-
-  gameOver();
 });
 newGame.addEventListener("click", startNewGame);
