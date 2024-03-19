@@ -160,7 +160,13 @@ const checkWinCondition = (): void => {
 
 const gameOver = () => {
   if (!checkValidMoves()) {
-    alert("Game over.");
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    const overlayText = document.createElement("div");
+    overlayText.classList.add("overlay__text");
+    overlayText.innerText = "Game Over";
+    overlay.appendChild(overlayText);
+    gameBoard.appendChild(overlay);
   }
 };
 
