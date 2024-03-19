@@ -3,31 +3,27 @@ import confetti from "canvas-confetti";
 import { playLoseSound, playPartySound, playShiftSound } from "./audio";
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
-const score = document.querySelector<HTMLSpanElement>("span");
-const highScore = document.getElementById("highScore");
-const savedHighScore = localStorage.getItem("highScore");
+
+// gameLogic.ts ==> verticalShift,horizontalShift
+// initialization.ts ==> setStart, loadGame, startNewGame
+// score.ts ==> updateScore , resetScore , updateHighScore
+// domInteraction.ts ==> All DOM events
 
 let touchStartX: number;
 let touchStartY: number;
 
-let winAchieved = false;
-
-if (!gameBoard || !newGame || !score || !highScore) {
+if (!gameBoard || !newGame || !score) {
   throw new Error("Element not found.");
 }
-if (savedHighScore) {
-  highScore.innerText = savedHighScore;
-}
 
-let board: number[][] = [
+export let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
 ];
-let counter = 0;
-score.innerText = counter.toString();
 
+score.innerText = counter.toString();
 const setStart = () => {
   const randomNumbers: number[] = [];
   while (randomNumbers.length < 4) {
@@ -38,24 +34,6 @@ const setStart = () => {
   }
   board[randomNumbers[0]][randomNumbers[1]] = 2;
   board[randomNumbers[2]][randomNumbers[3]] = 2;
-};
-
-const updateHighScore = (): void => {
-  if (counter > Number(highScore.innerText)) {
-    highScore.innerText = counter.toString();
-    localStorage.setItem("highScore", counter.toString());
-  }
-};
-
-const updateScore = (num: number): void => {
-  counter += num;
-  score.innerText = counter.toString();
-  updateHighScore();
-};
-
-const resetScore = (): void => {
-  counter = 0;
-  score.innerText = counter.toString();
 };
 
 const resetBoard = () => {
@@ -116,55 +94,6 @@ const startNewGame = () => {
   loadGame();
 };
 
-const checkValidMoves = (): boolean => {
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 4; j++) {
-      if (board[i][j] === 0) {
-        return true;
-      }
-      if (j < 3 && board[i][j] === board[i][j + 1]) {
-        return true;
-      }
-      if (i < 3 && board[i][j] === board[i + 1][j]) {
-        return true;
-      }
-    }
-  }
-  updateHighScore();
-  return false;
-};
-
-const checkWinCondition = (): void => {
-  if (!winAchieved) {
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (board[i][j] === 2048) {
-          winAchieved = true;
-          playPartySound();
-          confetti({
-            particleCount: 700,
-            spread: 360,
-          });
-          return;
-        }
-      }
-    }
-  }
-};
-
-const gameOver = () => {
-  if (!checkValidMoves()) {
-    playLoseSound();
-    const overlay = document.createElement("div");
-    overlay.classList.add("overlay");
-    const overlayText = document.createElement("div");
-    overlayText.classList.add("overlay__text");
-    overlayText.innerText = "Game Over";
-    overlay.appendChild(overlayText);
-    gameBoard.appendChild(overlay);
-  }
-};
-
 const loadGame = (): void => {
   setStart();
   for (let i = 0; i < 4; i++) {
@@ -191,7 +120,6 @@ const transposeBoard = (board: number[][]): number[][] => {
 
   return transposedBoard;
 };
-
 const verticalShift = (direction: "up" | "down") => {
   board = transposeBoard(board);
   if (direction === "up") {
