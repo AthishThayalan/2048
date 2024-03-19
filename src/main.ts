@@ -1,8 +1,6 @@
 import "./style.scss";
 import confetti from "canvas-confetti";
 import { playLoseSound, playPartySound, playShiftSound } from "./audio";
-import * as Score from "./_score.scss";
-
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
 const score = document.querySelector<HTMLSpanElement>("span");
