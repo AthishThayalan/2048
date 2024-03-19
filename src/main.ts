@@ -1,15 +1,7 @@
 import "./style.scss";
 import { playShiftSound } from "./audio";
 import { checkValidMoves, checkWinCondition, gameOver } from "./gameCondition";
-import {
-  updateHighScore,
-  resetScore,
-  score,
-  highScore,
-  savedHighScore,
-  counter,
-  updateScore,
-} from "./score";
+import { resetScore, score, counter, updateScore } from "./score";
 export const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
 
