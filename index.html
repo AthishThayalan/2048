@@ -13,8 +13,8 @@
     </div>
     <div class="board"></div>
     <button id="newGameBtn">New Game</button>
-    <div class="info-icon" id="infoIcon">?</div>
-    <div class="info-box" id="infoBox">
+    <div class="info-icon">?</div>
+    <div class="info-box">
       <p>How to play:</p>
       <ul>
         <li>Use arrow keys to move tiles.</li>
@@ -32,6 +32,10 @@
     </audio>
     <audio id="winSound">
       <source src="./src/assets/party-horn.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <audio id="loseSound">
+      <source src="./src/assets/lose.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
     <script type="module" src="/src/main.ts"></script>

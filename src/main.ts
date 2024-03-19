@@ -53,6 +53,11 @@ const playPartySound = () => {
   winAudio.play();
 };
 
+const playLoseSound = () => {
+  const loseAudio = document.getElementById("loseSound") as HTMLAudioElement;
+  loseAudio.play();
+};
+
 const updateScore = (num: number): void => {
   counter += num;
   score.innerText = counter.toString();
@@ -160,6 +165,7 @@ const checkWinCondition = (): void => {
 
 const gameOver = () => {
   if (!checkValidMoves()) {
+    playLoseSound();
     const overlay = document.createElement("div");
     overlay.classList.add("overlay");
     const overlayText = document.createElement("div");
