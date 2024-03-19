@@ -1,5 +1,6 @@
 @use "./variables";
 .board {
+  padding-left: 3px;
   margin-top: 30px;
   display: flex;
   flex-wrap: wrap;

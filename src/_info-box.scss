@@ -8,6 +8,7 @@
   width: 30px;
   height: 30px;
   background-color: variables.$info-color;
+  font-weight: 700;
   border-radius: 50%;
   text-align: center;
   line-height: 30px;
@@ -25,11 +26,11 @@
   width: 250px;
   background-color: variables.$info-color;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 7px;
   p {
     margin-bottom: 25px;
     font-weight: bold;
-    background-color: variables.$info-color;
+    background-color: transparent;
   }
   ul {
     li {

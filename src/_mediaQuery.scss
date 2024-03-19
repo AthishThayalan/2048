@@ -14,6 +14,21 @@
       height: 65px;
       font-size: 30px;
       border-width: 5px;
+      &--updated {
+        animation: magnify 0.3s ease;
+      }
+
+      @keyframes magnify {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
     }
   }
   .score-box {
@@ -22,7 +37,7 @@
     font-size: 15px;
     margin-right: 30px;
     span {
-      font-size: 18px;
+      font-size: 15px;
     }
   }
 }

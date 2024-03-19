@@ -1,11 +1,17 @@
 import "./style.scss";
 import confetti from "canvas-confetti";
+import { playLoseSound, playPartySound, playShiftSound } from "./audio";
+import * as Score from "./_score.scss";
 
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
 const score = document.querySelector<HTMLSpanElement>("span");
 const highScore = document.getElementById("highScore");
 const savedHighScore = localStorage.getItem("highScore");
+
+let touchStartX: number;
+let touchStartY: number;
+
 let winAchieved = false;
 
 if (!gameBoard || !newGame || !score || !highScore) {
@@ -19,7 +25,7 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 0, 1024, 1024],
+  [0, 0, 0, 0],
 ];
 let counter = 0;
 score.innerText = counter.toString();
@@ -41,21 +47,6 @@ const updateHighScore = (): void => {
     highScore.innerText = counter.toString();
     localStorage.setItem("highScore", counter.toString());
   }
-};
-
-const playShiftSound = () => {
-  const audio = document.getElementById("rowShiftSound") as HTMLAudioElement;
-  audio.play();
-};
-
-const playPartySound = () => {
-  const winAudio = document.getElementById("winSound") as HTMLAudioElement;
-  winAudio.play();
-};
-
-const playLoseSound = () => {
-  const loseAudio = document.getElementById("loseSound") as HTMLAudioElement;
-  loseAudio.play();
 };
 
 const updateScore = (num: number): void => {
@@ -262,6 +253,33 @@ document.addEventListener("keydown", (event) => {
     verticalShift("up");
   } else if (event.key === "ArrowDown") {
     verticalShift("down");
+  }
+});
+
+gameBoard.addEventListener("touchstart", (event) => {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+});
+
+gameBoard.addEventListener("touchend", (event) => {
+  const touchEndX = event.changedTouches[0].clientX;
+  const touchEndY = event.changedTouches[0].clientY;
+
+  const dx = touchEndX - touchStartX;
+  const dy = touchEndY - touchStartY;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 0) {
+      horizontalShift("right");
+    } else {
+      horizontalShift("left");
+    }
+  } else {
+    if (dy > 0) {
+      verticalShift("down");
+    } else {
+      verticalShift("up");
+    }
   }
 });
 newGame.addEventListener("click", startNewGame);
