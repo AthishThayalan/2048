@@ -19,7 +19,7 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 0, 1024, 1024],
+  [0, 0, 0, 0],
 ];
 let counter = 0;
 score.innerText = counter.toString();
