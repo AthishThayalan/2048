@@ -1,6 +1,5 @@
 import "./style.scss";
 import confetti from "canvas-confetti";
-
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
 const score = document.querySelector<HTMLSpanElement>("span");
