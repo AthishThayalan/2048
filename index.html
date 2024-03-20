@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./assets/2048_Icon-CvA3Vngq.png" type="image/x-icon" />
+    <title>2048</title>
+    <script type="module" crossorigin src="./assets/index-D1ytJi8y.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DGa3vwIn.css">
+  </head>
+  <body>
+    <h1>2048</h1>
+    <div class="score-box" id="scoreBox">
+      Score: <span class="score">0</span> | High Score:
+      <span id="highScore">0</span>
+    </div>
+    <div class="board"></div>
+    <button id="newGameBtn">New Game</button>
+    <div class="info-icon">?</div>
+    <div class="info-box">
+      <p>How to play:</p>
+      <ul>
+        <li>Use arrow keys to move tiles.</li>
+        <li>Combine tiles with the same number to reach 2048.</li>
+        <li>A new tile with a value of 2 or 4 will appear after each move.</li>
+        <li>The game ends when there are no valid moves left.</li>
+      </ul>
+    </div>
+    <audio id="rowShiftSound">
+      <source
+        src="./assets/mixkit-game-ball-tap-2073-mK8qUHIr.wav"
+        type="audio/mpeg"
+      />
+      Your browser does not support the audio element.
+    </audio>
+    <audio id="winSound">
+      <source src="./assets/party-horn-0iLVhyK_.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <audio id="loseSound">
+      <source src="./assets/lose-B8fjz36T.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+  </body>
+</html>
