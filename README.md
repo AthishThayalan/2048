@@ -27,6 +27,8 @@
 7. Aim to achieve the 2048 tile to win the game.
 8. Enjoy playing the 2048 game!
 
+9. Live Demo : https://athishthayalan.github.io/2048/
+
 ## Project Structure
 
 - **index.html**: Main HTML file containing the game interface.
@@ -50,6 +52,6 @@
 - **Random Tile Spawn**: After each move, a new tile with either value 2 or 4 spawns randomly on an empty cell.
 - **Local Storage**: The highest score achieved is stored in the local storage for persistence across sessions.
 
-Live Demo : (Coming soon!)
+
 
 Enjoy playing the 2048 game!
