@@ -1,11 +1,18 @@
 import "./style.scss";
 import confetti from "canvas-confetti";
+import { playLoseSound, playPartySound, playShiftSound } from "./audio";
 const gameBoard = document.querySelector<HTMLDivElement>(".board");
 const newGame = document.getElementById("newGameBtn");
 const score = document.querySelector<HTMLSpanElement>("span");
 const highScore = document.getElementById("highScore");
 const savedHighScore = localStorage.getItem("highScore");
+
 let winAchieved = false;
+
+let touchStartX: number;
+let touchStartY: number;
+
+let counter = 0;
 
 if (!gameBoard || !newGame || !score || !highScore) {
   throw new Error("Element not found.");
@@ -20,7 +27,7 @@ let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
 ];
-let counter = 0;
+
 score.innerText = counter.toString();
 
 const setStart = () => {
@@ -35,87 +42,17 @@ const setStart = () => {
   board[randomNumbers[2]][randomNumbers[3]] = 2;
 };
 
-const updateHighScore = (): void => {
-  if (counter > Number(highScore.innerText)) {
-    highScore.innerText = counter.toString();
-    localStorage.setItem("highScore", counter.toString());
-  }
-};
-
-const playShiftSound = () => {
-  const audio = document.getElementById("rowShiftSound") as HTMLAudioElement;
-  audio.play();
-};
-
-const playPartySound = () => {
-  const winAudio = document.getElementById("winSound") as HTMLAudioElement;
-  winAudio.play();
-};
-
-const playLoseSound = () => {
-  const loseAudio = document.getElementById("loseSound") as HTMLAudioElement;
-  loseAudio.play();
-};
-
-const updateScore = (num: number): void => {
-  counter += num;
-  score.innerText = counter.toString();
-  updateHighScore();
-};
-
-const resetScore = (): void => {
-  counter = 0;
-  score.innerText = counter.toString();
-};
-
-const resetBoard = () => {
-  board = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ];
-};
-
-const spawnRandomBox = (): void => {
-  const emptyCells = [];
+const loadGame = (): void => {
+  setStart();
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
-      if (board[i][j] === 0) {
-        emptyCells.push([i, j]);
-      }
+      let box = document.createElement("div");
+      box.classList.add("board__box");
+      box.id = (4 * i + (j % 4)).toString();
+      let value: number = board[i][j];
+      updateBoard(box, value);
+      gameBoard.appendChild(box);
     }
-  }
-  if (emptyCells.length === 0) {
-    return;
-  }
-  const randomIndex = Math.floor(Math.random() * emptyCells.length);
-  const randomCell = emptyCells[randomIndex];
-  const newValue = Math.random() < 0.9 ? 2 : 4;
-
-  board[randomCell[0]][randomCell[1]] = newValue;
-
-  const box = document.getElementById(
-    (4 * randomCell[0] + randomCell[1]).toString()
-  );
-  updateBoard(box, newValue);
-};
-
-const updateBoard = (box: any, value: number): void => {
-  box.innerText = "";
-  box.classList.value = "";
-  box.classList.add("board__box");
-  if (value !== 0) {
-    box.innerText = value;
-    if (value > 2048) {
-      box.classList.add("board__box--dark");
-    } else {
-      box.classList.add(`board__box--${value}`);
-    }
-    box.classList.add("board__box--updated");
-    setTimeout(() => {
-      box.classList.remove("board__box--updated");
-    }, 300);
   }
 };
 
@@ -175,17 +112,48 @@ const gameOver = () => {
   }
 };
 
-const loadGame = (): void => {
-  setStart();
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 4; j++) {
-      let box = document.createElement("div");
-      box.classList.add("board__box");
-      box.id = (4 * i + (j % 4)).toString();
-      let value: number = board[i][j];
-      updateBoard(box, value);
-      gameBoard.appendChild(box);
+const updateHighScore = (): void => {
+  if (counter > Number(highScore.innerText)) {
+    highScore.innerText = counter.toString();
+    localStorage.setItem("highScore", counter.toString());
+  }
+};
+
+const updateScore = (num: number): void => {
+  counter += num;
+  score.innerText = counter.toString();
+  updateHighScore();
+};
+
+const resetScore = (): void => {
+  counter = 0;
+  score.innerText = counter.toString();
+};
+
+const resetBoard = () => {
+  board = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ];
+};
+
+const updateBoard = (box: any, value: number): void => {
+  box.innerText = "";
+  box.classList.value = "";
+  box.classList.add("board__box");
+  if (value !== 0) {
+    box.innerText = value;
+    if (value > 2048) {
+      box.classList.add("board__box--dark");
+    } else {
+      box.classList.add(`board__box--${value}`);
     }
+    box.classList.add("board__box--updated");
+    setTimeout(() => {
+      box.classList.remove("board__box--updated");
+    }, 300);
   }
 };
 
@@ -200,6 +168,30 @@ const transposeBoard = (board: number[][]): number[][] => {
   }
 
   return transposedBoard;
+};
+
+const spawnRandomBox = (): void => {
+  const emptyCells = [];
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (board[i][j] === 0) {
+        emptyCells.push([i, j]);
+      }
+    }
+  }
+  if (emptyCells.length === 0) {
+    return;
+  }
+  const randomIndex = Math.floor(Math.random() * emptyCells.length);
+  const randomCell = emptyCells[randomIndex];
+  const newValue = Math.random() < 0.9 ? 2 : 4;
+
+  board[randomCell[0]][randomCell[1]] = newValue;
+
+  const box = document.getElementById(
+    (4 * randomCell[0] + randomCell[1]).toString()
+  );
+  updateBoard(box, newValue);
 };
 
 const verticalShift = (direction: "up" | "down") => {
@@ -261,6 +253,32 @@ document.addEventListener("keydown", (event) => {
     verticalShift("up");
   } else if (event.key === "ArrowDown") {
     verticalShift("down");
+  }
+});
+gameBoard.addEventListener("touchstart", (event) => {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+});
+
+gameBoard.addEventListener("touchend", (event) => {
+  const touchEndX = event.changedTouches[0].clientX;
+  const touchEndY = event.changedTouches[0].clientY;
+
+  const dx = touchEndX - touchStartX;
+  const dy = touchEndY - touchStartY;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 0) {
+      horizontalShift("right");
+    } else {
+      horizontalShift("left");
+    }
+  } else {
+    if (dy > 0) {
+      verticalShift("down");
+    } else {
+      verticalShift("up");
+    }
   }
 });
 newGame.addEventListener("click", startNewGame);
