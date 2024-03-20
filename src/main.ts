@@ -8,19 +8,16 @@ const highScore = document.getElementById("highScore");
 const savedHighScore = localStorage.getItem("highScore");
 
 let winAchieved = false;
-
+let counter = 0;
 let touchStartX: number;
 let touchStartY: number;
 
-let counter = 0;
-
-if (!gameBoard || !newGame || !score || !highScore) {
+if (!gameBoard || !newGame || !highScore || !score) {
   throw new Error("Element not found.");
 }
 if (savedHighScore) {
   highScore.innerText = savedHighScore;
 }
-
 let board: number[][] = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
@@ -59,7 +56,7 @@ const loadGame = (): void => {
 const startNewGame = () => {
   resetScore();
   resetBoard();
-  gameBoard.innerHTML = "";
+
   loadGame();
 };
 
@@ -137,6 +134,7 @@ const resetBoard = () => {
     [0, 0, 0, 0],
     [0, 0, 0, 0],
   ];
+  gameBoard.innerHTML = "";
 };
 
 const updateBoard = (box: any, value: number): void => {
